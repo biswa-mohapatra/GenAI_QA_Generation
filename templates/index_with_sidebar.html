@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Generation with Params</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <a href="/logout" type="button" class="logout-btn">Logout</a>
+    <div class="background"></div>
+    <div class="container">
+        <h1>Generate Text with Parameters</h1>
+        <form action="/generate_with_params" method="post">
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required>
+
+            <label for="topic">Topic:</label>
+            <input type="text" id="topic" name="topic" required>
+
+            <label for="subtopic">Sub-topic:</label>
+            <input type="text" id="subtopic" name="subtopic" required>
+
+            <label for="query">Your Prompt:</label>
+            <textarea id="query" name="query" rows="4" required></textarea>
+            
+            <button type="submit" id="generate-btn">Generate Text</button>
+        </form>
+        <div id="overlay"></div>
+        <div class="popup" id="popup">
+            <div class="popup-content">
+                <span class="close-btn" id="close-btn">&times;</span>
+                <h2>Generated Text</h2>
+                <button class="copy-btn" id="copy-btn"><i class="fas fa-copy"></i> Copy to Clipboard</button>
+                <p class="popup-text" id="popup-text">{{ generated_text }}</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        const generateBtn = document.getElementById('generate-btn');
+        const closeBtn = document.getElementById('close-btn');
+        const overlay = document.getElementById('overlay');
+        const popup = document.getElementById('popup');
+        const copyBtn = document.getElementById('copy-btn');
+        const popupText = document.getElementById('popup-text');
+
+        generateBtn.addEventListener('click', () => {
+            generateBtn.classList.add('loading');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            popup.style.display = 'none';
+            overlay.style.display = 'none';
+            document.querySelector('.container').style.filter = 'none';
+            generateBtn.classList.remove('loading');
+        });
+
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(popupText.textContent).then(() => {
+                alert('Copied to clipboard');
+            });
+        });
+
+        if (popupText.textContent.trim() !== "") {
+            popup.style.display = 'block';
+            overlay.style.display = 'block';
+            document.querySelector('.container');
+        }
+    </script>
+</body>
+</html>
